@@ -40,7 +40,11 @@ usersRouter.get("/me", JWTAuthMiddleware ,async(req, res, next) =>{
     try{
         console.log("user_id",req.user._id)
         const foundUser = await usersModel.findById(req.user._id)
+        if(foundUser){
         res.send(foundUser)
+    }else{
+        next(createError(404,"user not found"))
+    }
     }catch (error){
         next(error)
     }
@@ -65,6 +69,7 @@ usersRouter.put("/me",JWTAuthMiddleware, async(req,res, next) =>{
     try{
         console.log(req.user._id)
         const user = await usersModel.findByIdAndUpdate(req.user._id, req.body, {new: true, runValidators: true})
+        user.save()
         if(user){
         res.send(user)
     }else{
@@ -78,8 +83,11 @@ usersRouter.put("/me",JWTAuthMiddleware, async(req,res, next) =>{
 
 usersRouter.delete("/me",JWTAuthMiddleware, async(req, res, next) =>{
     try{
-        await usersModel.findByIdAndDelete(req.user._Id)
-        res.status(204).send(`deleted user `)
+        console.log("here")
+        console.log(req.user._id)
+        await usersModel.findByIdAndDelete(req.user._id)
+        console.log("here")
+        res.send(`deleted user `)
     }catch(error){
         next(error)
     }
