@@ -30,7 +30,7 @@ usersRouter.post("/", async (req,res,next)=>{
 })
 usersRouter.get("/", async (req, res, next) => {
     try{
-        const user = await usersModel.find()//.populate({ref:"chat"})
+        const user = await usersModel.find()//.populate({path:"chat"})
         res.send(user)
     } catch(error){
         next(error)
@@ -39,11 +39,11 @@ usersRouter.get("/", async (req, res, next) => {
 usersRouter.get("/me", JWTAuthMiddleware ,async(req, res, next) =>{
     try{
         console.log("user_id",req.user._id)
-        const foundUser = await usersModel.findById(req.user._id)
+        const foundUser = await usersModel.findById(req.user._id).populate({path:"chat"})
         if(foundUser){
         res.send(foundUser)
     }else{
-        next(createError(404,"user not found"))
+        next(createError(404,"user not found    "))
     }
     }catch (error){
         next(error)
@@ -52,7 +52,7 @@ usersRouter.get("/me", JWTAuthMiddleware ,async(req, res, next) =>{
 
 usersRouter.get("/:userId", async(req,res,next)=>{
     try{
-        const foundUser = await usersModel.findById(req.params.userId)//.populate({ref: "chat"})
+        const foundUser = await usersModel.findById(req.params.userId).populate({path: "chat"})
         if(user){
         res.send(foundUser)}
         else{

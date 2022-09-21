@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors"
 import chatRouter from "./api/Chats/endpoints/index.js"
 import usersRouter from "./api/Users/endpoints/index.js"
+import messageRouter from "./api/messages/endpoint/index.js"
 
 const server = express()
 const port = process.env.PORT||3003
@@ -13,6 +14,7 @@ server.use(express.json())
 
 server.use("/users",usersRouter)
 server.use("/chat",chatRouter)
+server.use("/message", messageRouter)
 
 mongoose.connect(process.env.MONGO_URL)
 
