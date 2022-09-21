@@ -30,8 +30,14 @@ usersRouter.post("/", async (req,res,next)=>{
 })
 usersRouter.get("/", async (req, res, next) => {
     try{
-        const user = await usersModel.find()//.populate({path:"chat"})
-        res.send(user)
+        const user = await usersModel.find()
+        if(user){
+        for(let i =0; i<user.length; i++){
+            if(user[i].chats){
+        await user[i].populate({path:"chats", select:"involved", populate:{path:"involved", select:"username"} })
+        //await user[i].populate({path:"involved", select: "username"})
+    }}
+        res.send(user)}
     } catch(error){
         next(error)
     }
