@@ -32,6 +32,19 @@
       
         next()
       })
+      UserSchema.pre("findOneAndUpdate", async function (next) {
+
+
+        const password = this._update.password
+      
+        
+      
+        if (password){
+         this._update.password = await bcrypt.hash(password, 11)
+        }
+      
+        next()
+      })
 
     UserSchema.static("checkCredentials", async function (email, plainPassword) {
 

@@ -21,9 +21,15 @@ const cloudinaryUploader = multer({
 
 usersRouter.post("/", async (req,res,next)=>{
     try{
+        if(req.username, req.password, req.email){
         const newUser = await new usersModel(req.body)
         newUser.save()
         res.status(201).send(newUser._id)
+    }else{
+        console.log("fail")
+        next(createError(400, "plesae fill in all the fields"))
+    }
+        
     }catch(error){
         next(error)
     }
