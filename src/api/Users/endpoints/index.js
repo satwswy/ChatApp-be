@@ -21,7 +21,7 @@ const cloudinaryUploader = multer({
 
 usersRouter.post("/", async (req,res,next)=>{
     try{
-        if(req.username, req.password, req.email){
+        if(await req.body.username, await req.body.password, await req.body.email){
         const newUser = await new usersModel(req.body)
         newUser.save()
         res.status(201).send(newUser._id)
@@ -37,6 +37,7 @@ usersRouter.post("/", async (req,res,next)=>{
 usersRouter.get("/", async (req, res, next) => {
     try{
         const user = await usersModel.find()
+        
         if(user){
         for(let i =0; i<user.length; i++){
             if(user[i].chats){
